@@ -453,8 +453,12 @@ PeeringDB
 \end_layout
 
 \begin_layout Standard
-95,7% (~700/731) das redes estão em até 20 IXPs, 97,3% (~660/678) dos IXPs
- se associam a até 50 redes
+Com as análises feitas pelo cliente, foi possível criar dois gráficos da
+ CDF (função distribuição acumulada), uma da distribuição de IXPs por rede
+ e outra da distribuição de redes por IXP.
+ O que as CDFs nos mostram é basicamente que 95,7%, ou seja, cerca de 700
+ das redes estão em até 20 IXPs, e 97,3%, ou cerca de 660, dos IXPs se associam
+ a até 50 redes.
 \end_layout
 
 \begin_layout Standard
@@ -528,6 +532,13 @@ CDF da distribuição da quantidade de redes por IXP
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
 \end_inset
 
 

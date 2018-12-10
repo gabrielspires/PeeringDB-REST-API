@@ -453,8 +453,12 @@ PeeringDB
 \end_layout
 
 \begin_layout Standard
-95,7% (~700/731) das redes estão em até 20 IXPs, 97,3% (~660/678) dos IXPs
- se associam a até 50 redes
+Com as análises feitas pelo cliente, foi possível criar dois gráficos da
+ CDF (função distribuição acumulada), uma da distribuição de IXPs por rede
+ e outra da distribuição de redes por IXP.
+ O que as CDFs nos mostram é basicamente que 95,7%, ou seja, cerca de 700
+ das redes estão em até 20 IXPs, e 97,3%, ou cerca de 660, dos IXPs se associam
+ a até 50 redes.
 \end_layout
 
 \begin_layout Standard
@@ -555,10 +559,6 @@ O maior desafio na minha opinião foi escolher como ler os dados dos arquivos
  uma vez que não tinha como saber o tamanho da base de dados, no final acabei
  usando o número de entradas no arquivo de IXPs como base para ler os outros
  arquivos.
-\end_layout
-
-\begin_layout Section
-Conclusão
 \end_layout
 
 \end_body

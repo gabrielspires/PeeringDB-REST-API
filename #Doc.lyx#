@@ -453,8 +453,12 @@ PeeringDB
 \end_layout
 
 \begin_layout Standard
-95,7% (~700/731) das redes estão em até 20 IXPs, 97,3% (~660/678) dos IXPs
- se associam a até 50 redes
+Com as análises feitas pelo cliente, foi possível criar dois gráficos da
+ CDF (função distribuição acumulada), uma da distribuição de IXPs por rede
+ e outra da distribuição de redes por IXP.
+ O que as CDFs nos mostram é basicamente que 95,7%, ou seja, cerca de 700
+ das redes estão em até 20 IXPs, e 97,3%, ou cerca de 660, dos IXPs se associam
+ a até 50 redes.
 \end_layout
 
 \begin_layout Standard
@@ -533,30 +537,32 @@ CDF da distribuição da quantidade de redes por IXP
 
 \end_layout
 
+\begin_layout Standard
+
+\end_layout
+
 \begin_layout Section
-Desafios
+Desafios e dificuldades
 \end_layout
 
 \begin_layout Standard
 Inicialmente a maior dificuldade que tive foi descobrir como fazer a requisição
  e criar o cabeçalho sem usar bibliotecas, mas logo descobri que essa era
  a parte mais fácil do programa.
+ Ao tentar fazer várias requisições em uma mesma execução, um erro de Broken
+ pipe aparecia e perdi muito tempo tentando descobrir como arrumar isso,
+ no fim das contas descobri que fechando e abrindo o socket novamente resolvia
+ esse problema.
+ Outra coisa que de início achei estranha foi que no servidor não foi preciso
+ configurar sockets, o próprio Flask já cuida dessa parte, o que foi muito
+ prático.
 \end_layout
 
 \begin_layout Standard
-aprender a fazer a requisição sem usar bibliotecas
-\end_layout
-
-\begin_layout Standard
-error de broken pipe
-\end_layout
-
-\begin_layout Standard
-usar os sockets pra esse tp foi um pouco diferente (servidor sem socket)
-\end_layout
-
-\begin_layout Section
-Conclusão
+O maior desafio na minha opinião foi escolher como ler os dados dos arquivos
+ uma vez que não tinha como saber o tamanho da base de dados, no final acabei
+ usando o número de entradas no arquivo de IXPs como base para ler os outros
+ arquivos.
 \end_layout
 
 \end_body
