@@ -3,7 +3,7 @@
 # ./client IP:port Opt
 # IP:port = ip e porto do servidor
 # Opt = nº da análise ("0" -> IXPs por rede ou "1" -> redes por IXP)
-# fechar aós análise
+# fechar após análise
 
 import socket
 import json

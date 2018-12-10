@@ -18,15 +18,15 @@ netixlanfilepath =  sys.argv[4]
 
 with open(netfilepath, 'r') as netjson:
     netfile = json.load(netjson)
-    if netfile: print("net loaded...")
+    # if netfile: print("net loaded...")
 
 with open(ixfilepath, 'r') as ixjson:
     ixfile = json.load(ixjson)
-    if ixfile: print("ix loaded...")
+    # if ixfile: print("ix loaded...")
 
 with open(netixlanfilepath, 'r') as netixlanjson:
     netixlanfile = json.load(netixlanjson)
-    if netixlanfile: print("netixlan loaded...")
+    # if netixlanfile: print("netixlan loaded...")
 
 
 @app.route('/api/ix')

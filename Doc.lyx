@@ -159,12 +159,293 @@ status open
 Implementação
 \end_layout
 
-\begin_layout Subsection
-Cliente
+\begin_layout Standard
+Este trabalho foi desenvolvido em Python 3.
+ O programa cliente faz uso das bibliotecas 
+\emph on
+socket
+\emph default
+usada para estabelecer a conexão com o servidor, 
+\emph on
+json
+\emph default
+ para codificar adequadamente os dados recebidos do servidor, facilitando
+ a análise e a biblioteca 
+\emph on
+sys
+\emph default
+ que é usada para receber os argumentos do programa (argv[1], argv[2]...).
+ O programa servidor além de usar as mesmas bibliotecas do cliente, usa
+ também a biblioteca 
+\emph on
+Flask
+\emph default
+ que facilita a implementação dos endpoints.
 \end_layout
 
 \begin_layout Subsection
 Servidor
+\end_layout
+
+\begin_layout Standard
+Ao executar o servidor, é necessário especificar qual o porto e os caminhos
+ para os arquivos json com os dados sobre as redes e os IXPs, quando o servidor
+ for executado a seguinte mensagem aparecerá:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+* Serving Flask app "server" (lazy loading)  
+\end_layout
+
+\begin_layout Plain Layout
+
+* Environment: production    
+\end_layout
+
+\begin_layout Plain Layout
+
+  WARNING: Do not use the development server in a production environment.
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+  Use a production WSGI server instead.
+  
+\end_layout
+
+\begin_layout Plain Layout
+
+* Debug mode: off  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Não sei se essa mensagem do Flask irá atrapalhar na correção, mas não achei
+ nenhum modo de suprimí-la então achei melhor citar isso na documentação.
+\end_layout
+
+\begin_layout Standard
+O servidor funciona da seguinte maneira, uma variável é criada e recebe
+ a função do Flask, depois são lidos os argumentos do programa descritos
+ anteriormente, de acordo com os arquivos passados como parâmetro são geradas
+ três variáveis no formato 
+\emph on
+json
+\emph default
+ com o conteúdo de cada arquivo.
+ Para cada endpoint a ser usado, é criada uma função que retorna os dados
+ requisitados, essas funções são executadas dependendo da url passada na
+ requisição pelo cliente.
+ Para saber qual função executar, o servidor usa um decorator 
+\emph on
+route()
+\emph default
+ para cada função, isso diz ao flask qual url deve disparar cada função.
+ Veja o pseudo-código abaixo:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Python,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+import ...
+\end_layout
+
+\begin_layout Plain Layout
+
+app = Flask()
+\end_layout
+
+\begin_layout Plain Layout
+
+Lê argumentos:
+\end_layout
+
+\begin_layout Plain Layout
+
+	flask_port = port
+\end_layout
+
+\begin_layout Plain Layout
+
+	net = json.load(Netfile)  
+\end_layout
+
+\begin_layout Plain Layout
+
+	ix = json.load(Ixfile)
+\end_layout
+
+\begin_layout Plain Layout
+
+	netix = json.load(Netixlanfile)
+\end_layout
+
+\begin_layout Plain Layout
+
+Para cada argumento de arquivo:
+\end_layout
+
+\begin_layout Plain Layout
+
+	Abrir json
+\end_layout
+
+\begin_layout Plain Layout
+
+@app.route('/api/ix')
+\end_layout
+
+\begin_layout Plain Layout
+
+def ix():
+\end_layout
+
+\begin_layout Plain Layout
+
+	retorna ix
+\end_layout
+
+\begin_layout Plain Layout
+
+@app.route('/api/ixnets/<ix_id>')
+\end_layout
+
+\begin_layout Plain Layout
+
+def ixnets(ix_id):
+\end_layout
+
+\begin_layout Plain Layout
+
+	retorna lista de IDs das redes do IXP
+\end_layout
+
+\begin_layout Plain Layout
+
+.
+\end_layout
+
+\begin_layout Plain Layout
+
+.
+\end_layout
+
+\begin_layout Plain Layout
+
+.
+\end_layout
+
+\begin_layout Plain Layout
+
+app.run(host='0.0.0.0', port=flask_port)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Cliente
+\end_layout
+
+\begin_layout Standard
+O cliente é responsável por disparar as requisições para o servidor, receber
+ os dados e fazer duas análises, sendo uma sobre o número de IXPs associados
+ a cada rede, e outra sobre o número de redes associadas por IXP.
+ A escolha de qual análise será feita é dada pelo ultimo parâmetro do programa,
+ o parâmetro 0 indica que a primeira análise será feita e o parâmetro 1
+ indica que a segunda será feita.
+\end_layout
+
+\begin_layout Standard
+Na análise 0 foram usadas informações dos três arquivos disponíveis no servidor,
+ já na análise 1 o arquivo referente ao endpoint /api/netname/<net_id> não
+ precisou ser utilizado.
+ Para receber os dados de cada endpoint, foi aberto um socket com o ip e
+ o porto do servidor, e com a conexão estabelecida um header foi construído
+ manualmente no formado abaixo:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "breaklines=true,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+'GET /api/ix HTTP/1.1
+\backslash
+r
+\backslash
+nHost: http://' + server_ip + ':' + server_port + '
+\backslash
+r
+\backslash
+n
+\backslash
+r
+\backslash
+n'
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+O exemplo acima recebe os dados do enpoint 
+\series bold
+/api/ix
+\series default
+ mas o mesmo é feito para os endpoints 
+\series bold
+/api/ixnets/<ix_id>
+\series default
+\emph on
+ e
+\series bold
+ 
+\emph default
+/api/netname/<net_id>.
+
+\series default
+\emph on
+ 
+\emph default
+Esse header então é enviado pelo socket ao servidor e o cliente espera até
+ receber uma resposta.
+ Ao receber a resposta o cliente descarta o cabeçalho da mensagem e lê a
+ parte da mensagem que tem a informação desejada em formato 
+\emph on
+json
+\emph default
+.
+ Após receber os dados necessários para cada análise, o cliente associa
+ as informações e gera uma saída com 3 colunas, sendo elas o identificador
+ da rede, nome da rede e número de IXPs associados à rede na análise 0 e
+ o identificador do IXP, nome do IXP e número de redes associadas ao IXP
+ na análise 1.
+ Ambas as análises são mostradas na saída padrão e após isso o cliente é
+ encerrado.
 \end_layout
 
 \begin_layout Section
@@ -253,23 +534,27 @@ CDF da distribuição da quantidade de redes por IXP
 \end_layout
 
 \begin_layout Section
-Desafios
+Desafios e dificuldades
 \end_layout
 
 \begin_layout Standard
-aprender a fazer a requisição sem usar bibliotecas
+Inicialmente a maior dificuldade que tive foi descobrir como fazer a requisição
+ e criar o cabeçalho sem usar bibliotecas, mas logo descobri que essa era
+ a parte mais fácil do programa.
+ Ao tentar fazer várias requisições em uma mesma execução, um erro de Broken
+ pipe aparecia e perdi muito tempo tentando descobrir como arrumar isso,
+ no fim das contas descobri que fechando e abrindo o socket novamente resolvia
+ esse problema.
+ Outra coisa que de início achei estranha foi que no servidor não foi preciso
+ configurar sockets, o próprio Flask já cuida dessa parte, o que foi muito
+ prático.
 \end_layout
 
 \begin_layout Standard
-error de broken pipe
-\end_layout
-
-\begin_layout Standard
-usar os sockets pra esse tp foi um pouco diferente (servidor sem socket)
-\end_layout
-
-\begin_layout Section
-Conclusão
+O maior desafio na minha opinião foi escolher como ler os dados dos arquivos
+ uma vez que não tinha como saber o tamanho da base de dados, no final acabei
+ usando o número de entradas no arquivo de IXPs como base para ler os outros
+ arquivos.
 \end_layout
 
 \end_body
