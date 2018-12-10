@@ -9,7 +9,6 @@ from flask import Flask
 
 app = Flask(__name__)
 
-host = "127.0.0.1"
 # parâmetros da linha de comando
 port =              sys.argv[1]
 netfilepath =       sys.argv[2]
@@ -60,4 +59,4 @@ def netname(net_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=port, debug=False)
