@@ -99,8 +99,60 @@ Gabriel Henrique Souto Pires
 Introdução
 \end_layout
 
+\begin_layout Standard
+Neste trabalho foi implementado um sistema de consulta para o PeeringDC,
+ que é um banco de dados de interconexões entre redes membros de IXPs (Internet
+ Exchance Points ou Ponto de Troca de Tráfego).
+ Foi criado um par cliente-servidor onde o cliente envia requisições HTTP
+ para o servidor, e o servidor responde com os dados em formado json.
+\end_layout
+
 \begin_layout Section
 Como executar o programa
+\end_layout
+
+\begin_layout Standard
+O servidor tem como parâmetros o porto no qual receberá mensagens, o caminho
+ do arquivo de redes, o caminho do arquivo de IXPs e o caminho do arquivo
+ de assiciações, nessa ordem.
+ Abaixo temos um exemplo do comando para executar o sevidor.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+./server.py 5000 tp3-input/net.json tp3-input/ix.json tp3-input/netixlan.json
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+O cliente tem como parâmetros o ip e a porta que o servidor está utilizando
+ separados por ':' e um número referente a qual análise será feita que pode
+ ser 0 se for a análise de IXPs por rede, ou 1 se for a análise redes por
+ IXP.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+./client.py 127.0.0.1:5000 0
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -120,6 +172,11 @@ PeeringDB
 \end_layout
 
 \begin_layout Standard
+95,7% (~700/731) das redes estão em até 20 IXPs, 97,3% (~660/678) dos IXPs
+ se associam a até 50 redes
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement h
 wide false
@@ -131,7 +188,7 @@ status collapsed
 \align center
 \begin_inset Graphics
 	filename anal0.pdf
-	width 100text%
+	height 10cm
 
 \end_inset
 
@@ -171,7 +228,7 @@ status collapsed
 \align center
 \begin_inset Graphics
 	filename anal1.pdf
-	width 100text%
+	height 10cm
 
 \end_inset
 
@@ -199,8 +256,20 @@ CDF da distribuição da quantidade de redes por IXP
 Desafios
 \end_layout
 
+\begin_layout Standard
+aprender a fazer a requisição sem usar bibliotecas
+\end_layout
+
+\begin_layout Standard
+error de broken pipe
+\end_layout
+
+\begin_layout Standard
+usar os sockets pra esse tp foi um pouco diferente (servidor sem socket)
+\end_layout
+
 \begin_layout Section
-Introdução
+Conclusão
 \end_layout
 
 \end_body
